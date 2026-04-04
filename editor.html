@@ -6,10 +6,10 @@
     <title>Settings | Jeev's Fitness</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        *{ margin:0; padding:0; box-sizing:border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
-            background: #0a0a0f;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
             color: #e2e8f0;
         }
         .navbar {
@@ -35,98 +35,208 @@
             background: rgba(56,189,248,0.1);
             color: #cbd5e1;
             margin-left: 10px;
+            transition: 0.2s;
         }
-        .nav-links a.active {
+        .nav-links a:hover, .nav-links a.active {
             background: linear-gradient(135deg, #38bdf8, #818cf8);
             color: white;
         }
-        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+        .container { max-width: 1300px; margin: 0 auto; padding: 30px 20px; }
         .section {
-            background: rgba(30,41,59,0.6);
-            backdrop-filter: blur(10px);
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
             border-radius: 28px;
             padding: 25px;
             margin-bottom: 25px;
-            border: 1px solid rgba(71,85,105,0.4);
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 40px rgba(0,0,0,0.4);
+            background: rgba(30, 41, 59, 0.85);
         }
         .section-title {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 600;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
             color: #f1f5f9;
+            border-bottom: 1px solid rgba(71,85,105,0.4);
+            padding-bottom: 12px;
         }
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
             margin-bottom: 20px;
         }
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 6px;
         }
-        .form-group label { font-size: 0.75rem; font-weight: 600; color: #94a3b8; }
+        .form-group label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+        }
         .form-group input, .form-group select {
             background: rgba(15,23,42,0.8);
             border: 1px solid rgba(71,85,105,0.5);
-            padding: 10px;
-            border-radius: 16px;
+            padding: 12px;
+            border-radius: 20px;
             color: white;
+            transition: 0.2s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 2px rgba(56,189,248,0.3);
         }
         .btn {
             background: linear-gradient(135deg, #38bdf8, #818cf8);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 40px;
             cursor: pointer;
             font-weight: 600;
+            transition: 0.2s;
         }
-        .exercise-item, .measurement-item {
-            background: rgba(15,23,42,0.6);
+        .btn-secondary {
+            background: rgba(56,189,248,0.2);
+            border: 1px solid #38bdf8;
+            margin-left: 10px;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.05);
+        }
+        .info-note {
+            background: rgba(56,189,248,0.1);
             padding: 12px;
-            border-radius: 18px;
-            margin-bottom: 10px;
+            border-radius: 16px;
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+        .exercise-item, .measurement-item, .custom-meas-item {
+            background: rgba(15,23,42,0.6);
+            padding: 14px;
+            border-radius: 20px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            gap: 12px;
+            transition: 0.2s;
         }
-        .delete-btn, .rename-btn {
-            padding: 5px 12px;
-            border-radius: 10px;
+        .exercise-item:hover, .measurement-item:hover {
+            background: rgba(15,23,42,0.8);
+        }
+        .delete-btn, .rename-btn, .insert-btn {
+            padding: 6px 14px;
+            border-radius: 12px;
             border: none;
             cursor: pointer;
-            margin-left: 5px;
+            margin-left: 6px;
+            font-weight: 500;
         }
         .delete-btn { background: rgba(239,68,68,0.2); color: #f87171; }
         .rename-btn { background: rgba(56,189,248,0.2); color: #38bdf8; }
+        .insert-btn { background: rgba(16,185,129,0.2); color: #10b981; }
+        
         .profile-upload {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
             margin-bottom: 20px;
         }
         .avatar-preview {
-            width: 100px;
-            height: 100px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
-            background: rgba(56,189,248,0.2);
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             cursor: pointer;
-            border: 2px solid #38bdf8;
+            border: 3px solid #38bdf8;
+            transition: 0.3s;
+            box-shadow: 0 10px 25px rgba(56,189,248,0.3);
+        }
+        .avatar-preview:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px rgba(56,189,248,0.5);
         }
         .avatar-preview img { width: 100%; height: 100%; object-fit: cover; }
-        .avatar-preview i { font-size: 2.5rem; color: #38bdf8; }
-        @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } }
+        .avatar-preview i { font-size: 3.5rem; color: white; }
+        
+        .input-group { position: relative; }
+        .datepicker-container {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #1e293b;
+            border-radius: 20px;
+            padding: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            z-index: 1000;
+            min-width: 280px;
+            border: 1px solid #334155;
+            display: none;
+        }
+        .datepicker-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        .datepicker-header button {
+            background: none;
+            border: none;
+            color: #38bdf8;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .datepicker-calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+        .datepicker-day {
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+        .datepicker-day:hover {
+            background: #38bdf8;
+            color: #0a0a0f;
+        }
+        .datepicker-day.selected {
+            background: #38bdf8;
+            color: #0a0a0f;
+        }
+        .datepicker-weekday {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            padding: 6px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -138,19 +248,33 @@
     </div>
 </div>
 <div class="container">
-    <!-- Profile Picture -->
-    <div class="section" id="profile">
+    <!-- Profile Picture Card -->
+    <div class="section">
         <div class="section-title"><i class="fas fa-camera"></i> Profile Picture</div>
         <div class="profile-upload">
             <div class="avatar-preview" id="avatarPreview" onclick="document.getElementById('imageUpload').click()">
                 <i class="fas fa-user"></i>
             </div>
             <input type="file" id="imageUpload" accept="image/*" style="display:none">
-            <p style="font-size:0.8rem; color:#94a3b8">Click to upload your photo</p>
+            <p style="font-size:0.85rem; color:#94a3b8">Click to upload your photo (auto-cropped to perfect circle)</p>
         </div>
     </div>
 
-    <!-- Custom Exercises -->
+    <!-- App Settings -->
+    <div class="section">
+        <div class="section-title"><i class="fas fa-sliders-h"></i> App Settings</div>
+        <div class="form-grid">
+            <div class="form-group"><label>Monthly Goal (calories)</label><input type="number" id="monthlyGoalSetting" step="100"></div>
+            <div class="form-group"><label>Workout Days per Week</label><input type="number" id="workoutDaysPerWeekSetting" min="1" max="7"></div>
+            <div class="form-group"><label>Fixed Requirement (calories/day)</label><input type="number" id="fixedRequirementSetting" step="10"></div>
+        </div>
+        <div class="info-note">
+            <i class="fas fa-info-circle"></i> Weekly Goal is automatically calculated as Monthly Goal / 4. Daily Goal = Weekly Goal / Workout Days per Week.
+        </div>
+        <button class="btn" id="saveSettingsBtn" style="margin-top:15px;"><i class="fas fa-save"></i> Save Settings</button>
+    </div>
+
+    <!-- Custom Exercises Manager -->
     <div class="section">
         <div class="section-title"><i class="fas fa-dumbbell"></i> Custom Exercises</div>
         <div class="form-grid">
@@ -159,32 +283,45 @@
             <div class="form-group"><label>Calories per Unit</label><input type="number" id="newExCoeff" step="0.1"></div>
         </div>
         <button class="btn" id="addExBtn">+ Add Exercise</button>
-        <div id="exercisesList" style="margin-top: 20px;"></div>
+        <div id="exercisesList" style="margin-top: 25px;"></div>
     </div>
 
     <!-- Body Measurements -->
     <div class="section">
         <div class="section-title"><i class="fas fa-heartbeat"></i> Body Measurements</div>
-        <div class="form-grid">
-            <div class="form-group"><label>Date</label><input type="date" id="measDate" value="2026-04-03"></div>
+        <div class="form-grid" id="measurementForm">
+            <div class="form-group input-group">
+                <label>Date</label>
+                <input type="text" id="measDate" placeholder="Select date" readonly>
+                <div id="measDatePicker" class="datepicker-container"></div>
+            </div>
             <div class="form-group"><label>Age</label><input type="number" id="measAge"></div>
             <div class="form-group"><label>Height (cm)</label><input type="number" id="measHeight"></div>
             <div class="form-group"><label>Weight (kg)</label><input type="number" id="measWeight"></div>
             <div class="form-group"><label>Waist (cm)</label><input type="number" id="measWaist"></div>
             <div class="form-group"><label>Bicep (cm)</label><input type="number" id="measBicep"></div>
         </div>
-        <button class="btn" id="saveMeasBtn">Save Measurements</button>
-        <div id="measHistory" style="margin-top: 20px;"></div>
+        <div id="customFieldsContainer"></div>
+        <div style="display: flex; gap: 12px; margin-top: 15px;">
+            <button class="btn" id="saveMeasBtn"><i class="fas fa-save"></i> Save Measurements</button>
+            <button class="btn btn-secondary" id="addCustomFieldBtn"><i class="fas fa-plus"></i> Insert New Body Part</button>
+        </div>
+        
+        <div class="section-title" style="margin-top: 30px;"><i class="fas fa-history"></i> Measurement History</div>
+        <div id="measurementHistoryList"></div>
     </div>
 </div>
 
 <script>
     let EXERCISES = [];
     let measurementHistory = [];
+    let customFields = [];
 
-    function load() {
-        EXERCISES = JSON.parse(localStorage.getItem('customExercises') || '[]');
-        if(EXERCISES.length===0){
+    function loadAll() {
+        // Load exercises
+        let savedEx = localStorage.getItem('customExercises');
+        if(savedEx) EXERCISES = JSON.parse(savedEx);
+        else {
             EXERCISES = [
                 { id: "pushups", name: "Push-ups", unit: "reps", coeff: 0.5 },
                 { id: "skipping", name: "Skipping", unit: "jumps", coeff: 0.1 },
@@ -197,17 +334,20 @@
             localStorage.setItem('customExercises', JSON.stringify(EXERCISES));
         }
         measurementHistory = JSON.parse(localStorage.getItem('measurementHistory') || '[]');
+        customFields = JSON.parse(localStorage.getItem('customMeasurementFields') || '[]');
+        
+        // Load app settings
+        let appSettings = JSON.parse(localStorage.getItem('appSettings') || '{}');
+        document.getElementById('monthlyGoalSetting').value = appSettings.monthlyGoal || 6400;
+        document.getElementById('workoutDaysPerWeekSetting').value = appSettings.workoutDaysPerWeek || 4;
+        document.getElementById('fixedRequirementSetting').value = appSettings.fixedRequirement || 2665;
+        
         renderExercises();
         renderMeasHistory();
+        renderCustomFields();
         loadProfileImage();
-        let latest = measurementHistory.sort((a,b)=>new Date(b.date)-new Date(a.date))[0];
-        if(latest){
-            document.getElementById('measAge').value = latest.age||'';
-            document.getElementById('measHeight').value = latest.height||'';
-            document.getElementById('measWeight').value = latest.weight||'';
-            document.getElementById('measWaist').value = latest.waist||'';
-            document.getElementById('measBicep').value = latest.bicep||'';
-        }
+        initDatePicker();
+        loadLatestMeasurements();
     }
 
     function loadProfileImage(){
@@ -215,6 +355,82 @@
         let preview = document.getElementById('avatarPreview');
         if(saved) preview.innerHTML = `<img src="${saved}" alt="Profile">`;
         else preview.innerHTML = '<i class="fas fa-user"></i>';
+    }
+
+    function initDatePicker() {
+        new DatePicker(document.getElementById('measDate'), 'measDatePicker', () => {});
+        const today = new Date().toISOString().slice(0,10);
+        document.getElementById('measDate').value = today;
+    }
+
+    class DatePicker {
+        constructor(inputElement, containerId, onSelect) {
+            this.input = inputElement;
+            this.container = document.getElementById(containerId);
+            this.onSelect = onSelect;
+            this.currentDate = new Date();
+            this.selectedDate = null;
+            this.init();
+        }
+        init() {
+            this.input.addEventListener('click', (e) => { e.stopPropagation(); this.show(); });
+            document.addEventListener('click', () => this.hide());
+            this.container.addEventListener('click', (e) => e.stopPropagation());
+            this.render();
+        }
+        render() {
+            const year = this.currentDate.getFullYear();
+            const month = this.currentDate.getMonth();
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            let html = `<div class="datepicker-header"><button class="prev-month">&lt;</button><span>${monthNames[month]} ${year}</span><button class="next-month">&gt;</button></div><div class="datepicker-calendar">`;
+            const weekdays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+            weekdays.forEach(d => html += `<div class="datepicker-weekday">${d}</div>`);
+            let startOffset = firstDay === 0 ? 6 : firstDay - 1;
+            for (let i = 0; i < startOffset; i++) html += `<div></div>`;
+            for (let d = 1; d <= daysInMonth; d++) {
+                let dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+                let selectedClass = (this.selectedDate === dateStr) ? 'selected' : '';
+                html += `<div class="datepicker-day ${selectedClass}" data-date="${dateStr}">${d}</div>`;
+            }
+            html += `</div>`;
+            this.container.innerHTML = html;
+            this.container.querySelectorAll('.datepicker-day').forEach(day => {
+                day.addEventListener('click', () => {
+                    this.selectedDate = day.dataset.date;
+                    this.input.value = this.selectedDate;
+                    if (this.onSelect) this.onSelect(this.selectedDate);
+                    this.hide();
+                });
+            });
+            this.container.querySelector('.prev-month')?.addEventListener('click', () => {
+                this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+                this.render();
+            });
+            this.container.querySelector('.next-month')?.addEventListener('click', () => {
+                this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+                this.render();
+            });
+        }
+        show() { this.container.style.display = 'block'; }
+        hide() { this.container.style.display = 'none'; }
+        setDate(dateStr) { this.selectedDate = dateStr; this.input.value = dateStr; this.render(); }
+    }
+
+    function loadLatestMeasurements() {
+        if(measurementHistory.length > 0) {
+            let latest = measurementHistory.sort((a,b)=>new Date(b.date)-new Date(a.date))[0];
+            document.getElementById('measAge').value = latest.age || '';
+            document.getElementById('measHeight').value = latest.height || '';
+            document.getElementById('measWeight').value = latest.weight || '';
+            document.getElementById('measWaist').value = latest.waist || '';
+            document.getElementById('measBicep').value = latest.bicep || '';
+            customFields.forEach(field => {
+                let input = document.getElementById(`custom_${field.id}`);
+                if(input && latest[field.id] !== undefined) input.value = latest[field.id];
+            });
+        }
     }
 
     function renderExercises(){
@@ -261,7 +477,8 @@
     }
 
     function renderMeasHistory(){
-        let container = document.getElementById('measHistory');
+        let container = document.getElementById('measurementHistoryList');
+        if(!container) return;
         if(measurementHistory.length===0){ container.innerHTML='<p>No measurements yet</p>'; return; }
         let sorted = [...measurementHistory].sort((a,b)=>new Date(b.date)-new Date(a.date));
         container.innerHTML = sorted.map(m=>`
@@ -281,6 +498,10 @@
             waist: document.getElementById('measWaist').value,
             bicep: document.getElementById('measBicep').value
         };
+        customFields.forEach(field => {
+            let input = document.getElementById(`custom_${field.id}`);
+            if(input) meas[field.id] = input.value;
+        });
         if(!meas.date){ alert('Select date'); return; }
         let idx = measurementHistory.findIndex(m=>m.date===meas.date);
         if(idx!==-1) measurementHistory[idx]=meas;
@@ -297,6 +518,60 @@
             localStorage.setItem('measurementHistory', JSON.stringify(measurementHistory));
             renderMeasHistory();
         }
+    }
+
+    function renderCustomFields() {
+        const container = document.getElementById('customFieldsContainer');
+        if(!container) return;
+        container.innerHTML = '';
+        customFields.forEach((field, idx) => {
+            const div = document.createElement('div');
+            div.className = 'form-group';
+            div.innerHTML = `
+                <label>${field.name} (${field.unit || 'cm'})</label>
+                <input type="number" id="custom_${field.id}" step="0.1" placeholder="Enter ${field.name.toLowerCase()}">
+                <button class="delete-btn" style="margin-top:5px;" onclick="removeCustomField(${idx})">Remove</button>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function addCustomField() {
+        let name = prompt('Enter body part name (e.g., Chest, Neck, Thigh, Body Fat %):');
+        if(!name) return;
+        let unit = prompt('Unit (e.g., cm, in, %)') || 'cm';
+        let id = name.toLowerCase().replace(/[^a-z0-9]/g, '_');
+        if(customFields.some(f => f.id === id)) {
+            alert('This body part already exists!');
+            return;
+        }
+        customFields.push({ id, name, unit });
+        localStorage.setItem('customMeasurementFields', JSON.stringify(customFields));
+        renderCustomFields();
+        const currentDate = document.getElementById('measDate').value;
+        const existing = measurementHistory.find(m => m.date === currentDate);
+        if(existing && existing[id]) {
+            document.getElementById(`custom_${id}`).value = existing[id];
+        }
+        alert(`Added "${name}". You can now enter this measurement.`);
+    }
+
+    function removeCustomField(idx) {
+        if(confirm(`Remove "${customFields[idx].name}" from measurement fields?`)) {
+            customFields.splice(idx, 1);
+            localStorage.setItem('customMeasurementFields', JSON.stringify(customFields));
+            renderCustomFields();
+        }
+    }
+
+    function saveAppSettings(){
+        let monthlyGoal = parseInt(document.getElementById('monthlyGoalSetting').value);
+        let workoutDays = parseInt(document.getElementById('workoutDaysPerWeekSetting').value);
+        let fixedReq = parseInt(document.getElementById('fixedRequirementSetting').value);
+        if(isNaN(monthlyGoal) || isNaN(workoutDays) || isNaN(fixedReq)){ alert('Invalid values'); return; }
+        let appSettings = { monthlyGoal, workoutDaysPerWeek: workoutDays, fixedRequirement: fixedReq };
+        localStorage.setItem('appSettings', JSON.stringify(appSettings));
+        alert('Settings saved! Weekly and daily goals will update in the dashboard.');
     }
 
     function handleImageUpload(e){
@@ -322,11 +597,15 @@
 
     document.getElementById('addExBtn').addEventListener('click', addExercise);
     document.getElementById('saveMeasBtn').addEventListener('click', saveMeasurement);
+    document.getElementById('saveSettingsBtn').addEventListener('click', saveAppSettings);
+    document.getElementById('addCustomFieldBtn').addEventListener('click', addCustomField);
     document.getElementById('imageUpload').addEventListener('change', handleImageUpload);
     window.renameEx = renameEx;
     window.deleteEx = deleteEx;
     window.deleteMeas = deleteMeas;
-    load();
+    window.removeCustomField = removeCustomField;
+    
+    loadAll();
 </script>
 </body>
-</html> 
+</html>
