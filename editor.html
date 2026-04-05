@@ -6,6 +6,7 @@
     <title>Settings | Jeev's Fitness</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Same styles as before – keep all */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
@@ -151,7 +152,6 @@
         .delete-btn { background: rgba(239,68,68,0.2); color: #f87171; }
         .rename-btn { background: rgba(56,189,248,0.2); color: #38bdf8; }
         .insert-btn { background: rgba(16,185,129,0.2); color: #10b981; }
-        
         .profile-upload {
             display: flex;
             flex-direction: column;
@@ -179,7 +179,6 @@
         }
         .avatar-preview img { width: 100%; height: 100%; object-fit: cover; }
         .avatar-preview i { font-size: 3.5rem; color: white; }
-        
         .input-group { position: relative; }
         .datepicker-container {
             position: absolute;
@@ -233,92 +232,102 @@
             color: #94a3b8;
             padding: 6px;
         }
-        
+        .logout-btn {
+            background: rgba(239,68,68,0.2);
+            border: 1px solid #ef4444;
+            color: #f87171;
+            margin-top: 20px;
+        }
+        .logout-btn:hover { background: rgba(239,68,68,0.4); }
         @media (max-width: 768px) {
             .form-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-<div class="navbar">
-    <div class="logo">Jeev's Fitness</div>
-    <div class="nav-links">
-        <a href="index.html">Dashboard</a>
-        <a href="editor.html" class="active">Settings</a>
+<div id="settingsContainer">
+    <div class="navbar">
+        <div class="logo">Jeev's Fitness</div>
+        <div class="nav-links">
+            <a href="index.html">Dashboard</a>
+            <a href="editor.html" class="active">Settings</a>
+        </div>
     </div>
-</div>
-<div class="container">
-    <!-- Profile Picture Card -->
-    <div class="section">
-        <div class="section-title"><i class="fas fa-camera"></i> Profile Picture</div>
-        <div class="profile-upload">
-            <div class="avatar-preview" id="avatarPreview" onclick="document.getElementById('imageUpload').click()">
-                <i class="fas fa-user"></i>
+    <div class="container">
+        <div class="section">
+            <div class="section-title"><i class="fas fa-camera"></i> Profile Picture</div>
+            <div class="profile-upload">
+                <div class="avatar-preview" id="avatarPreview" onclick="document.getElementById('imageUpload').click()">
+                    <i class="fas fa-user"></i>
+                </div>
+                <input type="file" id="imageUpload" accept="image/*" style="display:none">
+                <p style="font-size:0.85rem; color:#94a3b8">Click to upload your photo (auto-cropped to perfect circle)</p>
             </div>
-            <input type="file" id="imageUpload" accept="image/*" style="display:none">
-            <p style="font-size:0.85rem; color:#94a3b8">Click to upload your photo (auto-cropped to perfect circle)</p>
         </div>
-    </div>
 
-    <!-- App Settings -->
-    <div class="section">
-        <div class="section-title"><i class="fas fa-sliders-h"></i> App Settings</div>
-        <div class="form-grid">
-            <div class="form-group"><label>Monthly Goal (calories)</label><input type="number" id="monthlyGoalSetting" step="100"></div>
-            <div class="form-group"><label>Workout Days per Week</label><input type="number" id="workoutDaysPerWeekSetting" min="1" max="7"></div>
-            <div class="form-group"><label>Fixed Requirement (calories/day)</label><input type="number" id="fixedRequirementSetting" step="10"></div>
-        </div>
-        <div class="info-note">
-            <i class="fas fa-info-circle"></i> Weekly Goal is automatically calculated as Monthly Goal / 4. Daily Goal = Weekly Goal / Workout Days per Week.
-        </div>
-        <button class="btn" id="saveSettingsBtn" style="margin-top:15px;"><i class="fas fa-save"></i> Save Settings</button>
-    </div>
-
-    <!-- Custom Exercises Manager -->
-    <div class="section">
-        <div class="section-title"><i class="fas fa-dumbbell"></i> Custom Exercises</div>
-        <div class="form-grid">
-            <div class="form-group"><label>Exercise Name</label><input type="text" id="newExName" placeholder="e.g., Cycling"></div>
-            <div class="form-group"><label>Unit</label><input type="text" id="newExUnit" placeholder="km, reps, min"></div>
-            <div class="form-group"><label>Calories per Unit</label><input type="number" id="newExCoeff" step="0.1"></div>
-        </div>
-        <button class="btn" id="addExBtn">+ Add Exercise</button>
-        <div id="exercisesList" style="margin-top: 25px;"></div>
-    </div>
-
-    <!-- Body Measurements -->
-    <div class="section">
-        <div class="section-title"><i class="fas fa-heartbeat"></i> Body Measurements</div>
-        <div class="form-grid" id="measurementForm">
-            <div class="form-group input-group">
-                <label>Date</label>
-                <input type="text" id="measDate" placeholder="Select date" readonly>
-                <div id="measDatePicker" class="datepicker-container"></div>
+        <div class="section">
+            <div class="section-title"><i class="fas fa-sliders-h"></i> App Settings</div>
+            <div class="form-grid">
+                <div class="form-group"><label>Monthly Goal (calories)</label><input type="number" id="monthlyGoalSetting" step="100"></div>
+                <div class="form-group"><label>Workout Days per Week</label><input type="number" id="workoutDaysPerWeekSetting" min="1" max="7"></div>
+                <div class="form-group"><label>Fixed Requirement (calories/day)</label><input type="number" id="fixedRequirementSetting" step="10"></div>
             </div>
-            <div class="form-group"><label>Age</label><input type="number" id="measAge"></div>
-            <div class="form-group"><label>Height (cm)</label><input type="number" id="measHeight"></div>
-            <div class="form-group"><label>Weight (kg)</label><input type="number" id="measWeight"></div>
-            <div class="form-group"><label>Waist (cm)</label><input type="number" id="measWaist"></div>
-            <div class="form-group"><label>Bicep (cm)</label><input type="number" id="measBicep"></div>
+            <div class="info-note"><i class="fas fa-info-circle"></i> Weekly Goal is automatically calculated as Monthly Goal / 4. Daily Goal = Weekly Goal / Workout Days per Week.</div>
+            <button class="btn" id="saveSettingsBtn" style="margin-top:15px;"><i class="fas fa-save"></i> Save Settings</button>
         </div>
-        <div id="customFieldsContainer"></div>
-        <div style="display: flex; gap: 12px; margin-top: 15px;">
-            <button class="btn" id="saveMeasBtn"><i class="fas fa-save"></i> Save Measurements</button>
-            <button class="btn btn-secondary" id="addCustomFieldBtn"><i class="fas fa-plus"></i> Insert New Body Part</button>
+
+        <div class="section">
+            <div class="section-title"><i class="fas fa-dumbbell"></i> Custom Exercises</div>
+            <div class="form-grid">
+                <div class="form-group"><label>Exercise Name</label><input type="text" id="newExName" placeholder="e.g., Cycling"></div>
+                <div class="form-group"><label>Unit</label><input type="text" id="newExUnit" placeholder="km, reps, min"></div>
+                <div class="form-group"><label>Calories per Unit</label><input type="number" id="newExCoeff" step="0.1"></div>
+            </div>
+            <button class="btn" id="addExBtn">+ Add Exercise</button>
+            <div id="exercisesList" style="margin-top: 25px;"></div>
         </div>
-        
-        <div class="section-title" style="margin-top: 30px;"><i class="fas fa-history"></i> Measurement History</div>
-        <div id="measurementHistoryList"></div>
+
+        <div class="section">
+            <div class="section-title"><i class="fas fa-heartbeat"></i> Body Measurements</div>
+            <div class="form-grid" id="measurementForm">
+                <div class="form-group input-group"><label>Date</label><input type="text" id="measDate" placeholder="Select date" readonly><div id="measDatePicker" class="datepicker-container"></div></div>
+                <div class="form-group"><label>Age</label><input type="number" id="measAge"></div>
+                <div class="form-group"><label>Height (cm)</label><input type="number" id="measHeight"></div>
+                <div class="form-group"><label>Weight (kg)</label><input type="number" id="measWeight"></div>
+                <div class="form-group"><label>Waist (cm)</label><input type="number" id="measWaist"></div>
+                <div class="form-group"><label>Bicep (cm)</label><input type="number" id="measBicep"></div>
+            </div>
+            <div id="customFieldsContainer"></div>
+            <div style="display: flex; gap: 12px; margin-top: 15px;">
+                <button class="btn" id="saveMeasBtn"><i class="fas fa-save"></i> Save Measurements</button>
+                <button class="btn btn-secondary" id="addCustomFieldBtn"><i class="fas fa-plus"></i> Insert New Body Part</button>
+            </div>
+            <div class="section-title" style="margin-top: 30px;"><i class="fas fa-history"></i> Measurement History</div>
+            <div id="measurementHistoryList"></div>
+        </div>
+
+        <button id="logoutSettingsBtn" class="btn logout-btn" style="width:100%; margin-bottom:20px;"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </div>
 </div>
 
 <script>
+    // Authentication check
+    if (sessionStorage.getItem('jeev_logged_in') !== 'true') {
+        window.location.href = 'login.html';
+    }
+
+    function logout() {
+        sessionStorage.removeItem('jeev_logged_in');
+        window.location.href = 'login.html';
+    }
+    document.getElementById('logoutSettingsBtn').addEventListener('click', logout);
+
+    // ==================== SETTINGS LOGIC (same as final previous version) ====================
     let EXERCISES = [];
     let measurementHistory = [];
     let customFields = [];
 
     function loadAll() {
-        // Load exercises
         let savedEx = localStorage.getItem('customExercises');
         if(savedEx) EXERCISES = JSON.parse(savedEx);
         else {
@@ -335,13 +344,10 @@
         }
         measurementHistory = JSON.parse(localStorage.getItem('measurementHistory') || '[]');
         customFields = JSON.parse(localStorage.getItem('customMeasurementFields') || '[]');
-        
-        // Load app settings
         let appSettings = JSON.parse(localStorage.getItem('appSettings') || '{}');
         document.getElementById('monthlyGoalSetting').value = appSettings.monthlyGoal || 6400;
         document.getElementById('workoutDaysPerWeekSetting').value = appSettings.workoutDaysPerWeek || 4;
         document.getElementById('fixedRequirementSetting').value = appSettings.fixedRequirement || 2665;
-        
         renderExercises();
         renderMeasHistory();
         renderCustomFields();
@@ -604,7 +610,7 @@
     window.deleteEx = deleteEx;
     window.deleteMeas = deleteMeas;
     window.removeCustomField = removeCustomField;
-    
+
     loadAll();
 </script>
 </body>
