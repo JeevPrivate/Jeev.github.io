@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Jeev's Fitness | Pro Dashboard</title>
+    <title>Jeev's Fitness | Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-radial@4.0.0/build/index.umd.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Same CSS as before – keep all styles from the final version */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif;
@@ -274,6 +275,13 @@
             transition: 0.3s;
         }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(56,189,248,0.3); }
+        .logout-btn {
+            background: rgba(239,68,68,0.2);
+            border: 1px solid #ef4444;
+            color: #f87171;
+            margin-top: 20px;
+        }
+        .logout-btn:hover { background: rgba(239,68,68,0.4); }
         .charts-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -443,7 +451,7 @@
     </style>
 </head>
 <body>
-<div class="dashboard-container">
+<div class="dashboard-container" id="dashboardContainer">
     <aside class="sidebar">
         <div class="logo">
             <div class="logo-icon"><i class="fas fa-heartbeat"></i></div>
@@ -455,14 +463,15 @@
             <li class="nav-item"><a href="#" class="nav-link" onclick="return false"><i class="fas fa-chart-line"></i> Reports</a></li>
             <li class="nav-item"><a href="#" class="nav-link" onclick="window.location.href='editor.html#profile'"><i class="fas fa-user"></i> Profile</a></li>
         </ul>
+        <button id="logoutBtn" class="btn-primary logout-btn" style="width:100%; margin-top:30px;"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </aside>
 
     <main class="main-content">
+        <!-- Same dashboard content as before -->
         <div class="top-header">
             <div class="page-title"><h2>Fitness Dashboard</h2><p>Track your progress & stay motivated</p></div>
             <div class="date-badge"><i class="fas fa-calendar-alt"></i><span id="currentDate"></span></div>
         </div>
-
         <div class="profile-row">
             <div class="profile-avatar" id="avatarDisplay" onclick="document.getElementById('hiddenImageUpload').click()">
                 <i class="fas fa-user"></i>
@@ -472,18 +481,12 @@
                 <i class="fas fa-quote-left"></i> "The body achieves what the mind believes." — Jeev's Fitness
             </div>
         </div>
-
         <div class="stats-row" id="statsRow"></div>
-
         <div class="two-columns">
             <div class="workout-log-card">
                 <div class="card-header"><h3><i class="fas fa-plus-circle"></i> Today's Workout Log</h3><i class="fas fa-dumbbell" style="color:#38bdf8"></i></div>
                 <div class="form-row">
-                    <div class="input-group">
-                        <label><i class="fas fa-calendar-alt"></i> Date</label>
-                        <input type="text" id="workoutDate" placeholder="Select date" readonly>
-                        <div id="workoutDatePicker" class="datepicker-container"></div>
-                    </div>
+                    <div class="input-group"><label><i class="fas fa-calendar-alt"></i> Date</label><input type="text" id="workoutDate" placeholder="Select date" readonly><div id="workoutDatePicker" class="datepicker-container"></div></div>
                     <div class="input-group"><label>Day Type</label><select id="dayType"><option value="Sweat">💪 Sweat Day</option><option value="Rest">🧘 Rest Day</option></select></div>
                 </div>
                 <div class="exercise-grid" id="exerciseInputs"></div>
@@ -492,60 +495,28 @@
             <div class="workout-log-card">
                 <div class="card-header"><h3><i class="fas fa-utensils"></i> Daily Calorie Balance</h3></div>
                 <div class="form-row">
-                    <div class="input-group">
-                        <label>Date</label>
-                        <input type="text" id="foodDate" placeholder="Select date" readonly>
-                        <div id="foodDatePicker" class="datepicker-container"></div>
-                    </div>
+                    <div class="input-group"><label>Date</label><input type="text" id="foodDate" placeholder="Select date" readonly><div id="foodDatePicker" class="datepicker-container"></div></div>
                     <div class="input-group"><label>Food Intake (calories)</label><input type="number" id="foodCalories" placeholder="Enter calories from food" step="1"></div>
                 </div>
                 <div class="input-group" style="margin-bottom:15px"><label>Fixed Requirement (calories)</label><input type="number" id="fixedRequirement" readonly style="background:#334155"></div>
                 <button class="btn-primary" id="saveFoodBtn"><i class="fas fa-save"></i> Save Food Intake</button>
-                <div id="calorieStateDisplay" style="margin-top: 15px; padding: 12px; background: rgba(56,189,248,0.1); border-radius: 20px; text-align: center;">
-                    <span id="stateText">No data for selected date</span>
-                </div>
+                <div id="calorieStateDisplay" style="margin-top:15px; padding:12px; background:rgba(56,189,248,0.1); border-radius:20px; text-align:center;"><span id="stateText">No data for selected date</span></div>
             </div>
         </div>
-
-        <div class="chart-card" style="margin-bottom:30px">
-            <div class="chart-title"><i class="fas fa-chart-line"></i> 🍽️ Calorie Intake Over Time</div>
-            <div class="chart-container" style="height:300px"><canvas id="calorieIntakeChart"></canvas></div>
-        </div>
-
-        <div class="chart-card" style="margin-bottom:30px">
-            <div class="chart-title"><i class="fas fa-chart-line"></i> 🔥 Calorie Burning Trend (Daily Wave)</div>
-            <div class="chart-container" style="height:300px"><canvas id="calorieWaveChart"></canvas></div>
-        </div>
-
-        <div class="chart-card" style="margin-bottom:30px">
-            <div class="chart-title"><i class="fas fa-chart-bar"></i> 📊 Monthly Success % (Bar Chart)</div>
-            <div class="chart-container" style="height:300px"><canvas id="monthlySuccessBarChart"></canvas></div>
-        </div>
-
+        <div class="chart-card" style="margin-bottom:30px"><div class="chart-title"><i class="fas fa-chart-line"></i> 🍽️ Calorie Intake Over Time</div><div class="chart-container" style="height:300px"><canvas id="calorieIntakeChart"></canvas></div></div>
+        <div class="chart-card" style="margin-bottom:30px"><div class="chart-title"><i class="fas fa-chart-line"></i> 🔥 Calorie Burning Trend (Daily Wave)</div><div class="chart-container" style="height:300px"><canvas id="calorieWaveChart"></canvas></div></div>
+        <div class="chart-card" style="margin-bottom:30px"><div class="chart-title"><i class="fas fa-chart-bar"></i> 📊 Monthly Success % (Bar Chart)</div><div class="chart-container" style="height:300px"><canvas id="monthlySuccessBarChart"></canvas></div></div>
         <div class="charts-grid">
-            <div class="chart-card">
-                <div class="chart-title">
-                    <i class="fas fa-chart-bar"></i> Exercise Performance
-                    <button class="toggle-btn" id="toggleChartScale">Switch to Log Scale</button>
-                </div>
-                <div class="chart-container"><canvas id="groupedBarChart"></canvas></div>
-                <p style="font-size:0.7rem; text-align:center; margin-top:8px;">Skipping: 100 jumps = 1 unit. Hover for exact counts.</p>
-            </div>
+            <div class="chart-card"><div class="chart-title"><i class="fas fa-chart-bar"></i> Exercise Performance <button class="toggle-btn" id="toggleChartScale">Switch to Log Scale</button></div><div class="chart-container"><canvas id="groupedBarChart"></canvas></div><p style="font-size:0.7rem; text-align:center; margin-top:8px;">Skipping: 100 jumps = 1 unit. Hover for exact counts.</p></div>
             <div class="chart-card"><div class="chart-title"><i class="fas fa-chart-pie"></i> Workout Distribution (Nightingale Rose)</div><div class="chart-container"><canvas id="nightingaleChart"></canvas></div></div>
             <div class="chart-card"><div class="chart-title"><i class="fas fa-chart-line"></i> Weight & BMI Progress (Spline)</div><div class="chart-container"><canvas id="splineChart"></canvas></div></div>
             <div class="chart-card"><div class="chart-title"><i class="fas fa-chart-simple"></i> BMI Circular Gauge</div><div class="gauge-container"><canvas id="bmiGauge" width="180" height="180"></canvas></div></div>
         </div>
-
         <div class="two-columns" style="margin-bottom:30px">
             <div class="workout-log-card"><div class="card-header"><h3><i class="fas fa-chart-pie"></i> Calories Distribution</h3></div><div class="chart-container"><canvas id="caloriesPieChart"></canvas></div></div>
             <div class="workout-log-card"><div class="card-header"><h3><i class="fas fa-calendar-week"></i> Workout Days Summary</h3></div><div id="daysLeftSummary"></div></div>
         </div>
-
-        <div class="history-card">
-            <div class="card-header"><h3><i class="fas fa-table"></i> Workout History</h3><button class="btn-primary" id="refreshTableBtn" style="width:auto; padding:6px 16px; font-size:0.8rem;"><i class="fas fa-sync-alt"></i> Refresh</button></div>
-            <div style="overflow-x: auto;"><table class="workout-table" id="workoutTable"><thead id="tableHeader"></thead><tbody id="tableBody"></tbody></table></div>
-        </div>
-
+        <div class="history-card"><div class="card-header"><h3><i class="fas fa-table"></i> Workout History</h3><button class="btn-primary" id="refreshTableBtn" style="width:auto; padding:6px 16px; font-size:0.8rem;"><i class="fas fa-sync-alt"></i> Refresh</button></div><div style="overflow-x: auto;"><table class="workout-table" id="workoutTable"><thead id="tableHeader"></thead><tbody id="tableBody"></tbody></table></div></div>
         <div class="bottom-grid">
             <div class="info-card"><div class="card-header"><h3><i class="fas fa-heart"></i> Current Body Metrics</h3></div><div id="currentMetrics"></div><div id="bmiDisplay" class="bmi-indicator"></div></div>
             <div class="info-card"><div class="card-header"><h3><i class="fas fa-chart-line"></i> Monthly vs Weekly Progress</h3></div><div id="progressDetails"></div></div>
@@ -555,11 +526,22 @@
 </div>
 
 <script>
-    // ==================== CONFIGURATION ====================
+    // Authentication check
+    if (sessionStorage.getItem('jeev_logged_in') !== 'true') {
+        window.location.href = 'login.html';
+    }
+
+    // Logout function
+    function logout() {
+        sessionStorage.removeItem('jeev_logged_in');
+        window.location.href = 'login.html';
+    }
+    document.getElementById('logoutBtn').addEventListener('click', logout);
+
+    // ==================== DASHBOARD LOGIC (same as final working version) ====================
     let TARGET_WORKOUT_DAYS = 4;
     let FIXED_REQUIREMENT = 2665;
-    let MONTHLY_GOAL = 6400;     // Base monthly goal
-
+    let MONTHLY_GOAL = 6400;
     let EXERCISES = [];
     let workoutData = [];
     let measurementHistory = [];
@@ -575,15 +557,9 @@
         document.getElementById('fixedRequirement').value = FIXED_REQUIREMENT;
     }
 
-    function getWeeklyGoal() {
-        return Math.floor(MONTHLY_GOAL / 4);
-    }
+    function getWeeklyGoal() { return Math.floor(MONTHLY_GOAL / 4); }
+    function getDailyGoal() { return Math.floor(getWeeklyGoal() / TARGET_WORKOUT_DAYS); }
 
-    function getDailyGoal() {
-        return Math.floor(getWeeklyGoal() / TARGET_WORKOUT_DAYS);
-    }
-
-    // Date picker class
     class DatePicker {
         constructor(inputElement, containerId, onSelect) {
             this.input = inputElement;
@@ -732,25 +708,18 @@
         const sweatDays = allDays.filter(w => w.dayType === 'Sweat');
         const restDays = allDays.filter(w => w.dayType === 'Rest');
         const totalCalAllTime = allDays.reduce((s,w) => s + (w.totalCalories || calculateEntryCalories(w)), 0);
-        
         const currentMonth = new Date().toISOString().slice(0,7);
         const monthlyDays = allDays.filter(w => w.date.startsWith(currentMonth));
         const monthlyBurn = monthlyDays.reduce((s,w) => s + (w.totalCalories || calculateEntryCalories(w)), 0);
         const monthlyWorkoutDays = monthlyDays.filter(w => w.dayType === 'Sweat').length;
         const monthlySuccess = (monthlyBurn / MONTHLY_GOAL) * 100;
-        
-        // Weekly goal uses This Month Total (monthlyBurn) divided by weekly goal target
         const weeklyGoalTarget = getWeeklyGoal();
         const weeklyPerc = (monthlyBurn / weeklyGoalTarget) * 100;
-        
-        // Weekly success still based on actual last 7 days workout count
         const last7Days = getLastNDays(7);
         const weeklyWorkoutDays = [...new Set(allDays.filter(w => last7Days.includes(w.date) && w.dayType === 'Sweat').map(w => w.date))].length;
         const weeklySuccess = (weeklyWorkoutDays / TARGET_WORKOUT_DAYS) * 100;
-        
         const avgBurn = sweatDays.length ? (totalCalAllTime / sweatDays.length).toFixed(0) : 0;
         const bestDay = Math.max(...allDays.map(w => w.totalCalories || calculateEntryCalories(w)), 0);
-        
         const sortedMeas = [...measurementHistory].sort((a,b)=>new Date(b.date)-new Date(a.date));
         const currentWeight = sortedMeas[0]?.weight || '0';
         const today = new Date();
@@ -775,7 +744,6 @@
             <div class="stat-card"><div class="stat-header"><h3>Monthly Success</h3><i class="fas fa-percent"></i></div><div class="stat-value">${monthlySuccess.toFixed(1)}%</div><div class="progress-bar"><div class="progress-fill" style="width:${Math.min(monthlySuccess,100)}%"></div></div><div class="stat-trend">burned ${monthlyBurn} / ${MONTHLY_GOAL} cal</div></div>
             <div class="stat-card"><div class="stat-header"><h3>Current Weight</h3><i class="fas fa-weight-scale"></i></div><div class="stat-value">${currentWeight} kg</div><div class="stat-trend">latest measurement</div></div>
         `;
-        
         document.getElementById('daysLeftSummary').innerHTML = `
             <div class="metric-row"><span>📅 Days Left in Month</span><strong>${daysLeftMonth}</strong></div>
             <div class="metric-row"><span>📆 Days Left in Year</span><strong>${daysLeftYear}</strong></div>
@@ -784,13 +752,11 @@
             <div class="metric-row"><span>⭐ Available Workout Days in Month</span><strong>${availableWorkoutDaysMonth}</strong></div>
             <div class="metric-row"><span>⭐ Available Workout Days in Year</span><strong>${availableWorkoutDaysYear}</strong></div>
         `;
-        
         document.getElementById('progressDetails').innerHTML = `
             <div class="metric-row"><span>Weekly Goal Progress</span><strong>${weeklyPerc.toFixed(1)}% (${monthlyBurn}/${weeklyGoalTarget} cal from this month)</strong></div>
             <div class="metric-row"><span>Monthly Calories</span><strong>${monthlyBurn} / ${MONTHLY_GOAL}</strong></div>
             <div class="metric-row"><span>Monthly Success</span><strong>${monthlySuccess.toFixed(1)}%</strong></div>
         `;
-        
         updateTable();
         updateCharts(allDays, sweatDays, sortedMeas[0]);
         updateCurrentMetrics(sortedMeas[0]);
@@ -808,8 +774,8 @@
         const thead = document.getElementById('tableHeader');
         const tbody = document.getElementById('tableBody');
         const sorted = [...workoutData].sort((a,b)=>new Date(b.date)-new Date(a.date));
-        thead.innerHTML = `<tr><th>Date</th><th>Type</th>${EXERCISES.map(e=>`<th>${e.name} (${e.unit})</th>`).join('')}<th>🔥Cal</th><th>🏆%</th><th>Actions</th></tr>`;
-        if(sorted.length===0){ tbody.innerHTML='<tr><td colspan="100">No data</td></tr>'; return; }
+        thead.innerHTML = `<table><th>Date</th><th>Type</th>${EXERCISES.map(e=>`<th>${e.name} (${e.unit})</th>`).join('')}<th>🔥Cal</th><th>🏆%</th><th>Actions</th></tr>`;
+        if(sorted.length===0){ tbody.innerHTML='<tr><td colspan="100">No data</td></td>'; return; }
         tbody.innerHTML = sorted.map(w=>{
             let cal = w.totalCalories || calculateEntryCalories(w);
             let ach = ((cal/getDailyGoal())*100).toFixed(1);
@@ -847,7 +813,6 @@
         }
     }
     
-    // ========== CHARTS ==========
     function updateCharts(allDays, sweatDays, latestMeas) {
         // Calorie Intake Chart
         const intakeDates = [...new Set(foodIntakeData.map(f=>f.date))].sort();
@@ -862,7 +827,6 @@
             ] },
             options: { responsive: true }
         });
-        
         // Calorie Wave Chart
         const sortedDays = [...allDays].sort((a,b)=>new Date(a.date)-new Date(b.date));
         const waveLabels = sortedDays.map(d=>d.date.slice(5));
@@ -876,7 +840,6 @@
             ] },
             options: { responsive: true }
         });
-        
         // Monthly Success Bar Chart
         const monthlyMap = new Map();
         allDays.forEach(w => {
@@ -897,8 +860,7 @@
             data: { labels: monthLabels, datasets: [{ label: 'Monthly Success %', data: monthlySuccessData, backgroundColor: '#38bdf8', borderRadius: 8 }] },
             options: { responsive: true, scales: { y: { title: { display: true, text: 'Success (%)' }, max: 100 } }, plugins: { tooltip: { callbacks: { label: (ctx) => `${ctx.raw.toFixed(1)}%` } } } }
         });
-        
-        // Grouped Bar Chart with skipping unit conversion
+        // Grouped Bar Chart
         let totals = {};
         EXERCISES.forEach(ex=>totals[ex.id]=0);
         workoutData.forEach(w=>{
@@ -925,7 +887,6 @@
                 scales: { y: { type: currentBarScale, title: { display: true, text: currentBarScale === 'log' ? 'Log Scale (units)' : 'Linear Scale (units)' } } }
             }
         });
-        
         // Nightingale Rose
         const workoutCount = sweatDays.length;
         const restCount = allDays.length - workoutCount;
@@ -935,7 +896,6 @@
             data: { labels: ['Workout Days', 'Rest Days'], datasets: [{ data: [workoutCount, restCount], backgroundColor: ['#38bdf8', '#64748b'], borderWidth: 0 }] },
             options: { responsive: true }
         });
-        
         // Spline Chart
         let sortedMeas = [...measurementHistory].sort((a,b)=>new Date(a.date)-new Date(b.date));
         if(sortedMeas.length>0){
@@ -952,14 +912,12 @@
                 options: { responsive: true, elements: { line: { tension: 0.4 } } }
             });
         }
-        
         // Circular Gauge
         let currentBMI = 22;
         if(latestMeas && latestMeas.weight && latestMeas.height){
             currentBMI = (latestMeas.weight / ((latestMeas.height/100)**2)).toFixed(1);
         }
         drawCircularGauge(currentBMI);
-        
         // Calories Pie Chart
         const currentMonth = new Date().toISOString().slice(0,7);
         const monthlyCal = allDays.filter(w=>w.date.startsWith(currentMonth)).reduce((s,w)=>s+(w.totalCalories||calculateEntryCalories(w)),0);
